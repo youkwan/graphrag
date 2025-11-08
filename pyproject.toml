@@ -67,6 +67,9 @@ dependencies = [
     "textblob>=0.18.0.post0",
     "spacy>=3.8.4",
     "litellm>=1.77.1",
+    "pre-commit>=4.3.0",
+    "pytest>=8.4.2",
+    "streamlit>=1.51.0",
 ]
 
 [dependency-groups]
@@ -166,6 +169,7 @@ ignore_fail = 'return_non_zero'
 [tool.ruff]
 target-version = "py310"
 extend-include = ["*.ipynb"]
+line-length = 120
 
 [tool.ruff.format]
 preview = true
@@ -239,7 +243,6 @@ ignore = [
     "PERF203", # Needs restructuring of errors, we should bail-out on first error
     "C901",    # needs refactoring to remove cyclomatic complexity
     "B008", # Needs to restructure our cli params with Typer into constants
-    "ASYNC240"
 ]
 
 [tool.ruff.lint.per-file-ignores]
@@ -255,8 +258,18 @@ convention = "numpy"
 
 # https://github.com/microsoft/pyright/blob/9f81564a4685ff5c55edd3959f9b39030f590b2f/docs/configuration.md#sample-pyprojecttoml-file
 [tool.pyright]
+typeCheckingMode = "standard"
 include = ["graphrag", "tests", "examples_notebooks"]
-exclude = ["**/node_modules", "**/__pycache__"]
+exclude = [
+    "**/node_modules",
+    "**/__pycache__",
+    "graphrag/unified-search-app",
+    "graphrag/unified-search-app/**",
+    "tests/notebook",
+    "tests/notebook/**",
+]
+venvPath = "."
+venv = ".venv"
 
 [tool.pytest.ini_options]
 asyncio_default_fixture_loop_scope = "function"
